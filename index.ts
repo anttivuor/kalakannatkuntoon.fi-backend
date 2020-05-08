@@ -22,7 +22,7 @@ app.get('/api/money/:id', (request, response, next) => {
 app.put('/api/money/:id', (request, response, next) => {
     const body = request.body
     const newMoney = {
-        number: body.number 
+        number: body.number
     }
       Money.findByIdAndUpdate(request.params.id, newMoney)
         .then(newMoney => {
@@ -55,10 +55,10 @@ app.put('/api/money/:id', (request, response, next) => {
   const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
   }
-  
+
  app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = 443
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
