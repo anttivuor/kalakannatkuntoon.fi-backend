@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "build": "tsc -p ."
+    "build": "netlify-lambda build ."
   },
   "author": "",
   "license": "ISC",
@@ -15,9 +15,11 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "netlify-lambda": "^1.6.3",
     "mongoose": "^5.9.12",
     "mongoose-unique-validator": "^2.0.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "serverless-http": "^2.3.2"
   },
   "devDependencies": {
     "typescript": "^3.8.3"
