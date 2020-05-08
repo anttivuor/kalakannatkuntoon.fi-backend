@@ -1,6 +1,0 @@
-PUT http://localhost:3001/api/money/5eb2e0a491e3e01590e9b9ce
-Content-Type: application/json
-
-{
-    "number": 12
-}

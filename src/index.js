@@ -6,11 +6,11 @@ const cors = require('cors')
 const Money = require('./money.js')
 const app = express()
 
-app.use(express.json())
 app.use(cors())
-app.use(express.static('build'))
 
-app.get('/api/money/:id', (request, response, next) => {
+const router = express.Router()
+
+router.get('/api/money/:id', (request, response, next) => {
   Money.findById(request.params.id)
     .then(money => {
       if (money) response.json(money.toJSON())
@@ -21,7 +21,7 @@ app.get('/api/money/:id', (request, response, next) => {
     })
 })
 
-app.put('/api/money/:id', (request, response, next) => {
+router.put('/api/money/:id', (request, response, next) => {
   const body = request.body
   const newMoney = {
       number: body.number
@@ -32,7 +32,7 @@ app.put('/api/money/:id', (request, response, next) => {
       })
 })
 
-app.post('/api/money',  (request, response, next) => {
+router.post('/api/money',  (request, response, next) => {
   const body = request.body
   const money = new Money({
     number: body.number
@@ -48,7 +48,7 @@ app.post('/api/money',  (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.get('/api/money', (req, res) => {
+router.get('/api/money', (req, res) => {
   Money.find({}).then(moneys => {
     res.json(moneys.map(money => money.toJSON()))
   })
@@ -58,11 +58,13 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'Unknown endpoint' })
 }
 
-app.use(unknownEndpoint)
+router.use(unknownEndpoint)
 
 // const PORT = 5000
 // app.listen(PORT, () => {
 //   console.log(`Server running on port ${PORT}`)
 // })
 
-module.exports.handler = serverless(app);
+app.use('/.netlify/functions/index', router)
+
+module.exports.handler = serverless(app)

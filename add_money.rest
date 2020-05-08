@@ -1,6 +1,0 @@
-POST http://localhost:3001/api/money
-Content-Type: application/json
-
-{
-    "number": 12345
-}
