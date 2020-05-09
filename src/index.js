@@ -4,12 +4,49 @@ const serverless = require('serverless-http');
 const cors = require('cors')
 
 const Money = require('./money.js')
+const Feedback = require('./feedback.js')
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 
 const router = express.Router()
+
+router.get('/api/feedback', (req, res) => {
+  Feedback.find({}).then(feedbacks => {
+    res.json(feedbacks.map(feedback => feedback.toJSON()))
+  })
+})
+
+router.get('/api/feedback/:id', (request, response, next) => {
+  Feedback.findById(request.params.id)
+    .then(feedback => {
+      if (feedback) response.json(feedback.toJSON())
+      else response.status(404).end()
+    })
+    .catch(error => {
+      next(error)
+    })
+})
+
+router.post('/api/feedback',  (request, response, next) => {
+  const body = request.body
+  const feedback = new Feedback({
+    fname: body.fname,
+    sname: body.sname,
+    fback: body.fback
+  })
+  feedback
+    .save()
+    .then(feedback => {
+      return feedback.toJSON()
+    })
+    .then(feedback => {
+      response.json(feedback)
+    })
+    .catch(error => next(error))
+})
+    
 
 router.get('/api/money/:id', (request, response, next) => {
   Money.findById(request.params.id)
